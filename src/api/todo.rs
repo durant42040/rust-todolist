@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 pub struct Todo {
     id: i32,
     title: String,
-    done: bool,
+    done: i8,
 }
 
 #[derive(Deserialize)]
@@ -42,18 +42,9 @@ where
 pub async fn get_todo(State(db): State<Db>) -> Result<Json<Vec<Todo>>, ServerError> {
     let mysql_pool = db.mysql_pool;
 
-    let todos = sqlx::query!("SELECT * FROM Todo")
+    let todos = sqlx::query_as!(Todo, "SELECT * FROM Todo")
         .fetch_all(&mysql_pool)
         .await?;
-
-    let todos = todos
-        .into_iter()
-        .map(|todo| Todo {
-            id: todo.id,
-            title: todo.title,
-            done: todo.done == 1,
-        })
-        .collect::<Vec<Todo>>();
 
     Ok(Json(todos))
 }
@@ -72,10 +63,8 @@ pub async fn create_todo(
     let todo = Todo {
         id: result.last_insert_id() as i32,
         title,
-        done: false
+        done: 0,
     };
 
     Ok(Json(todo))
 }
-
-

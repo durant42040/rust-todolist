@@ -1,9 +1,8 @@
 use axum::Router;
+use std::env::var;
 
 use api::build_todo_routes;
 use db::Db;
-use dotenv;
-use std::env::var;
 
 mod api;
 mod db;

@@ -1,0 +1,17 @@
+[package]
+name = "todo-list"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+members = ["prisma"]
+
+[dependencies]
+axum = { version = "0.7.9", features=["macros"]}
+dotenv = "0.15.0"
+serde_json = "1.0.134"
+tokio = { version = "1.42.0", features = ["full"] }
+tower = "0.5.2"
+sqlx = { version = "0.8.2", features = ["mysql", "runtime-tokio"]}
+serde = "1.0.217"
+anyhow = "1.0.95"
